@@ -1,0 +1,31 @@
+{{#each errors}}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{text}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{{/each}}
+
+<div class="col-md-4 mx-auto">
+  <div class="card">
+    <div class="card-header">
+      <h3>Nuevo Producto</h3>
+    </div>
+    <div class="card-body">
+      <form action="/products/new-product" method="POST">
+        <div class="form-group">
+          <input type="text" name="nombre" class="form-control" placeholder="Nombre de Producto" autofocus>
+        </div>
+        <div class="form-group">
+          <textarea name="descripcion" class="form-control" placeholder="Descripción del Producto"></textarea>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary btn-block" type="submit">
+            Guardar Producto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
