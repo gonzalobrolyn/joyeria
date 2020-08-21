@@ -1,12 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const Product = require('../models/Product')
 
-router.get('/products/add', (req, res) => {
+const Product = require('../models/Product')
+const {isAuthenticated} = require('../helpers/auth')
+
+router.get('/products/add', isAuthenticated, (req, res) => {
   res.render('products/new-product')
 })
 
-router.post('/products/new-product', async (req, res) => {
+router.post('/products/new-product', isAuthenticated, async (req, res) => {
   const {nombre, descripcion} = req.body
   const errors = []
   if(!nombre) {
@@ -29,24 +31,24 @@ router.post('/products/new-product', async (req, res) => {
   }
 })
 
-router.get('/products', async (req, res) => {
+router.get('/products', isAuthenticated, async (req, res) => {
   const products = await Product.find().lean().sort({fecha: 'desc'})
   res.render('products/all-products', {products})
 })
 
-router.get('/products/edit/:id', async (req, res) => {
+router.get('/products/edit/:id', isAuthenticated, async (req, res) => {
   const product = await Product.findById(req.params.id).lean()
   res.render('products/edit-product', {product})
 })
 
-router.put('/products/edit-product/:id', async (req, res) => {
+router.put('/products/edit-product/:id', isAuthenticated, async (req, res) => {
   const {nombre, descripcion} = req.body
   await Product.findByIdAndUpdate(req.params.id, {nombre, descripcion})
   req.flash('success_msg', 'Producto actualizado correctamente')
   res.redirect('/products')
 })
 
-router.delete('/products/delete/:id', async (req, res) => {
+router.delete('/products/delete/:id', isAuthenticated, async (req, res) => {
   await Product.findByIdAndDelete(req.params.id)
   req.flash('success_msg', 'Producto eliminado correctamente')
   res.redirect('/products')
