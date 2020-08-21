@@ -1,1 +1,33 @@
-<h1>Register</h1>
+<div class="row">
+  <div class="col-md-4 mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h3>Registrar Usuario</h3>
+      </div>
+      <div class="card-body">
+        <form action="/users/signup" method="POST">
+          <div class="form-group">
+            <input type="text" class="form-control" name="nombre" placeholder="Nombre" value="{{nombre}}" autofocus>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="apellido" placeholder="Apellido" value="{{apellido}}">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="dni" placeholder="DNI" value="{{dni}}">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" name="clave" placeholder="Contraseña" value="{{clave}}">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" name="confirma_clave" placeholder="Repite contraseña" value="{{confirma_clave}}">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+              Registrar usuario
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
