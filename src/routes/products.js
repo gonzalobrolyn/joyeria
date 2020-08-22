@@ -48,7 +48,7 @@ router.put('/products/edit-product/:id', isAuthenticated, async (req, res) => {
   res.redirect('/products')
 })
 
-router.delete('/products/delete/:id', isAuthenticated, async (req, res) => {
+router.get('/products/delete/:id', async (req, res) => {
   await Product.findByIdAndDelete(req.params.id)
   req.flash('success_msg', 'Producto eliminado correctamente')
   res.redirect('/products')

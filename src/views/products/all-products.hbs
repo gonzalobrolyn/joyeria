@@ -1,20 +1,40 @@
 <div class="row">
-  {{#each products}}
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title d-flex justify-content-between align-items-center">
-            {{nombre}} 
-            <a href="/products/edit/{{_id}}"><i class="fas fa-edit"></i></a>
-          </h4>
-          <p>
-            {{descripcion}}
-          </p>
-          <form action="/products/delete/{{_id}}?_method=DELETE" method="POST">
-            <input type="hidden" name="_method" id="DELETE">
-            <button class="btn btn-danger btn-block btn-sm" type="submit">Eliminar</button>
-          </form>
-        </div>
+  {{#if products}}
+    <div class="card w-100">
+      <div class="card-body">
+        <h1 class="card-title display-4 d-flex justify-content-between align-items-center">Lista de productos 
+          <a href="/products/add" class="d-flex justify-content-center">
+            <i class="fas fa-plus-square" style="color: #2780e3 "></i>
+          </a>
+        </h1>
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Descrición</th>
+              <th scope="col">Editar</th>
+              <th scope="col">Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each products}}
+              <tr>
+                <td>{{nombre}}</td>
+                <td>{{descripcion}}</td>
+                <td>
+                  <a href="/products/edit/{{_id}}" class="d-flex justify-content-center">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                </td>
+                <td>
+                  <a href="/products/delete/{{_id}}" class="d-flex justify-content-center">
+                    <i class="fas fa-trash-alt" style="color: red;"></i>
+                  </a>
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
       </div>
     </div>
   {{else}}
@@ -24,7 +44,5 @@
         <a href="/products/add" class="btn btn-success btn-block">Crear producto</a>
       </div>
     </div>
-
-
-  {{/each}}
+  {{/if}}
 </div>

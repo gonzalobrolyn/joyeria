@@ -50,16 +50,26 @@ router.post('/users/signup', async (req, res) => {
     const dniUser = await User.findOne({dni: dni})
     if(dniUser) {
       req.flash('error_msg', 'El número de DNI esta en uso')
-      // res.render('users/signup', {nombre, apellido, dni, clave, confirma_clave})
       res.redirect('/users/signup')
     } else {
       const newUser = new User({nombre, apellido, dni, clave})
       newUser.clave = await newUser.encryptPassword(clave)
       await newUser.save()
       req.flash('success_msg', 'Usuario registrado correctamente')
-      res.redirect('/users/signin')
+      res.redirect('/users')
     }
   }
+})
+
+router.get('/users', async (req, res) => {
+  const users = await User.find().lean()
+  res.render('users/all-users', {users})
+})
+
+router.delete('/users/delete/:id', async (req, res) => {
+  await User.findByIdAndDelete(req.params.id)
+  req.flash('success_msg', 'Usuario eliminado correctamente')
+  res.redirect('/users')
 })
 
 router.get('/users/logout', (req, res) => {
