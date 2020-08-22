@@ -1,0 +1,31 @@
+<div class="row d-flex justify-content-center m-4">
+  <h2 class="display-4">Elige una tienda</h2>
+</div>
+<div class="row d-flex justify-content-around">
+  {{#each shops}}
+    <div class="col-md-3 mt-4">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title d-flex justify-content-between align-items-center">
+            {{nombre}}
+          </h4>
+          <p>{{direccion}}</p>
+          <p class="m-0">
+            {{#if estado}}
+              <button class="btn btn-outline-danger btn-block">Tienda Abierta</button>
+            {{else}}
+              <button class="btn btn-outline-success btn-block">Abrir Tienda</button>
+            {{/if}}
+          </p>
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <div class="card mx-auto">
+      <div class="card-body">
+        <p class="lead">No hay Tiendas</p>
+        <a href="/shops/add" class="btn btn-success btn-block">Registrar tienda</a>
+      </div>
+    </div>
+  {{/each}}
+</div>
