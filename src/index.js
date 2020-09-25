@@ -6,7 +6,6 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
 
-
 // Inicializations
 const app = express()
 require('./database')
@@ -49,6 +48,8 @@ app.use(require('./routes/index'))
 app.use(require('./routes/products'))
 app.use(require('./routes/users'))
 app.use(require('./routes/shops'))
+app.use(require('./routes/sales'))
+app.use(require('./routes/values'))
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))

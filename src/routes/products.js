@@ -54,4 +54,10 @@ router.get('/products/delete/:id', isAuthenticated, async (req, res) => {
   res.redirect('/products')
 })
 
+router.post('/products/search-product', isAuthenticated, async (req, res) => {
+  const {buscar} = req.body
+  const product = await Product.findOne({nombre: new RegExp(buscar, 'i')}).lean()
+  res.render('sales/sale', {product})
+})
+
 module.exports = router

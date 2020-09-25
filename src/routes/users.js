@@ -20,7 +20,7 @@ router.get('/users/signup', (req, res) => {
 })
 
 router.post('/users/signup', async (req, res) => {
-  const {nombre, apellido, dni, clave, confirma_clave} = req.body
+  const {nombre, apellido, dni, clave, confirma_clave, cargo} = req.body
   const errors = []
   if(!nombre) {
     errors.push({text: 'Escribe almenos un nombre'})
@@ -52,7 +52,7 @@ router.post('/users/signup', async (req, res) => {
       req.flash('error_msg', 'El número de DNI esta en uso')
       res.redirect('/users/signup')
     } else {
-      const newUser = new User({nombre, apellido, dni, clave})
+      const newUser = new User({nombre, apellido, dni, clave, cargo})
       newUser.clave = await newUser.encryptPassword(clave)
       await newUser.save()
       req.flash('success_msg', 'Usuario registrado correctamente')

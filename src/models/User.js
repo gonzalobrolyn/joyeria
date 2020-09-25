@@ -7,6 +7,7 @@ const UserSchema = new Schema ({
   apellido: {type: String, required: true},
   dni: {type: String, required: true},
   clave: {type: String, required: true},
+  cargo: {type: String, required: true},
   fecha: {type: Date, default: Date.now}
 })
 

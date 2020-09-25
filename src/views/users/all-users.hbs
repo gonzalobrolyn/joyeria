@@ -7,6 +7,7 @@
             {{dni}}
           </h4>
           <p>{{nombre}} {{apellido}}</p>
+          <p>{{cargo}}</p>
           <form action="/users/delete/{{_id}}?_method=DELETE" method="POST">
             <input type="hidden" name="_method" id="DELETE">
             <button class="btn btn-danger btn-block btn-sm" type="submit">Eliminar</button>

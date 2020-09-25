@@ -36,6 +36,14 @@ router.get('/select', isAuthenticated, async (req, res) => {
   res.render('shops/select', {shops})
 })
 
+router.get('/shops/open-shop/:id', isAuthenticated, async (req, res) => {
+  const llave = req.params.id
+  const estado = 1
+  req.user.clave = llave
+  await Shop.findByIdAndUpdate(llave, {estado})
+  res.redirect('/sales')
+})
+
 router.get('/shops', isAuthenticated, async (req, res) => {
   const shops = await Shop.find().lean()
   res.render('shops/all-shops', {shops})
