@@ -10,8 +10,13 @@
         <table class="table table-hover table-sm">
           <thead>
             <tr>
+              <th scope="col">Código</th>
               <th scope="col">Producto</th>
-              <th scope="col">Descrición</th>
+              <th scope="col">Piezas</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Peso</th>
+              <th scope="col">Valoración</th>
+              <th scope="col">Precio</th>
               <th scope="col">Editar</th>
               <th scope="col">Eliminar</th>
             </tr>
@@ -19,8 +24,27 @@
           <tbody>
             {{#each products}}
               <tr>
+                <td>{{codigo}}</td>
                 <td>{{nombre}}</td>
-                <td>{{descripcion}}</td>
+                <td>{{piezas}}</td>
+                <td>
+                  {{#if tipo}}
+                    Variable
+                  {{else}}
+                    Constante
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if peso}}
+                    {{peso}} gr.
+                  {{/if}}  
+                </td>
+                <td>
+                  {{#if valoracion}}
+                    S/ {{valoracion}}
+                  {{/if}}
+                </td>
+                <td>S/ {{precio}}</td>
                 <td>
                   <a href="/products/edit/{{_id}}" class="d-flex justify-content-center">
                     <i class="fas fa-edit"></i>

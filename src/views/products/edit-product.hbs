@@ -6,12 +6,59 @@
     <div class="card-body">
       <form action="/products/edit-product/{{product._id}}?_method=PUT" method="POST">
         <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="_id" value="{{product._id}}">
         <div class="form-group">
-          <input type="text" name="nombre" class="form-control" placeholder="Nombre de Producto" value="{{product.nombre}}">
+          <input type="text" name="codigo" class="form-control" placeholder="Código del Producto" title="Código del Producto" value="{{product.codigo}}">
+        </div> 
+        <div class="form-group">
+          <input type="text" name="nombre" class="form-control" placeholder="Nombre de Producto" title="Nombre de Producto" value="{{product.nombre}}">
         </div>
         <div class="form-group">
-          <textarea name="descripcion" class="form-control" placeholder="Descripción del Producto">{{product.descripcion}}</textarea>
+          <input type="number" name="piezas" class="form-control" placeholder="Numero de Piezas" title="Numero de Piezas" min="1" value="{{product.piezas}}">
         </div>
+        {{#if product.tipo}}
+          <div class="form-group">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-outline-primary">
+                <input type="radio" name="tipo" onclick="mostrarConstante()" value="0"> Precio CONSTANTE de producto
+              </label>
+              <label class="btn btn-outline-primary">
+                <input type="radio" name="tipo" onclick="mostrarVariable()" value="1" checked> Precio VARIABLE de producto
+              </label>
+            </div>
+          </div>
+        {{else}}
+          <div class="form-group">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-outline-primary">
+                <input type="radio" name="tipo" onclick="mostrarConstante()" value="0" checked> Precio CONSTANTE de producto
+              </label>
+              <label class="btn btn-outline-primary">
+                <input type="radio" name="tipo" onclick="mostrarVariable()" value="1"> Precio VARIABLE de producto
+              </label>
+            </div>
+          </div>          
+        {{/if}}
+
+        <div class="form-group" id="precio">
+          <input type="number" name="precio" class="form-control" placeholder="Precio del Producto" title="Precio del Producto" value="{{product.precio}}">
+        </div>
+        <div class="form-group" id="peso">
+          <input type="number" name="peso" class="form-control" placeholder="Peso del Producto" title="Peso del Producto" value="{{product.peso}}">
+        </div>
+        <div class="form-group" id="valoracion">
+          <select name="valoracion" class="form-control" title="Valoración del Producto">
+            {{#if product.tipo}}
+              <option value="{{value._id}}">{{value.nombre}}: ----- S/ {{value.precio}}</option>
+            {{else}}
+              <option value="">Valoración del producto</option>
+            {{/if}}
+            {{#each values}}
+              <option value="{{_id}}">{{nombre}}: ----- S/ {{precio}}</option>
+            {{/each}}
+          </select>
+        </div>
+
         <div class="form-group">
           <button class="btn btn-primary btn-block" type="submit">
             Guardar cambios
@@ -21,3 +68,27 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript"> 
+  {{#if product.tipo}}
+      document.getElementById('precio').style.display="none"
+      document.getElementById('peso').style.display="block"
+      document.getElementById('valoracion').style.display="block"
+  {{else}}
+      document.getElementById('precio').style.display="block"
+      document.getElementById('peso').style.display="none"
+      document.getElementById('valoracion').style.display="none"
+  {{/if}}
+
+  function mostrarConstante(){
+    document.getElementById('precio').style.display="block"
+    document.getElementById('peso').style.display="none"
+    document.getElementById('valoracion').style.display="none"
+  }
+
+  function mostrarVariable(){
+    document.getElementById('precio').style.display="none"
+    document.getElementById('peso').style.display="block"
+    document.getElementById('valoracion').style.display="block"
+  }
+</script>

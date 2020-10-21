@@ -13,27 +13,35 @@
           </form>
       </div>
     </div>
-      {{#if product}}
+      {{#if products}}
         <div class="card">
           <div class="card-body">
             <table class="table table-hover">
               <thead>
                 <tr>
+                  <th scope="col">Código</th>
                   <th scope="col">Producto</th>
-                  <th scope="col">Descrición</th>
                   <th scope="col">Agregar</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>{{product.nombre}}</td>
-                  <td>{{product.descripcion}}</td>
-                  <td>
-                    <a href="#" class="d-flex justify-content-center">
-                      <i class="fas fa-plus-square"></i>
-                    </a>
-                  </td>
-                </tr>
+                {{#each products}}
+                  <tr>
+                    <td>{{codigo}}</td>
+                    <td>{{nombre}} 
+                      {{#if peso}}
+                        {{peso}} gr.
+                      {{/if}}
+                    </td>
+                    <td>{{piezas}}</td>
+                    <td>S/ {{precio}}</td>
+                    <td>
+                      <a href="#" class="d-flex justify-content-center">
+                        <i class="fas fa-plus-square"></i>
+                      </a>
+                    </td>
+                  </tr>
+                {{/each}}
               </tbody>
             </table>
           </div>
