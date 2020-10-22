@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-sm-7" class="backgroun-#eee">
+    <div class="card w-100">
+      <div class="card-body">
+        <h3 class="card-title">Buscar Producto Para Entrega:</h3>
+          <form action="/products/search-deliver" method="POST">
+            <div class="input-group mb-3">
+              <input type="text" name="buscar" class="form-control" placeholder="Ingresar código de barras o nombre del producto">
+              <div class="input-group-append">
+                <button class="btn btn-success" type="submit">Buscar</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+      {{#if products}}
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Piezas</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Agregar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each products}}
+                  <tr>
+                    <td>{{codigo}}</td>
+                    <td>{{nombre}} 
+                      {{#if peso}}
+                        {{peso}} gr.
+                      {{/if}}
+                    </td>
+                    <td>{{piezas}}</td>
+                    <td>S/ {{precio}}</td>
+                    <td>
+                      <a href="/products/add-deliver/{{_id}}">Agregar</a>
+                    </td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {{else}}
+        <div class="card">
+          <div class="card-body">
+            <p class="lead">Busca producto para agregar</p>
+          </div>
+        </div>
+      {{/if}}
+  </div>
+
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header">
+        <h3>Entregar Producto</h3>
+      </div>
+      <div class="card-body">
+        <form action="/products/new-deliver" method="POST">
+          <input type="text" hidden name="idProducto" value="{{product._id}}">
+          <div class="form-group">
+            <input type="text" name="codigo" readonly class="form-control" value="{{product.codigo}}">
+          </div>
+          <div class="form-group">
+            <textarea name="nombre" readonly class="form-control">{{product.nombre}}</textarea>
+          </div>
+          <div class="form-group">
+            <input type="number" name="cantidad" class="form-control" placeholder="Cantidad" min="1">
+          </div>
+          <div class="form-group">
+            <select name="idLocal" class="form-control">
+              {{#each shops}}
+                <option value="{{_id}}">{{nombre}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit">
+              Entregar Producto
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

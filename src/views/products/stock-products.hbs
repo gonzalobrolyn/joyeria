@@ -1,0 +1,40 @@
+<div class="row">
+  {{#if items}}
+    <div class="card w-100">
+      <div class="card-body">
+        <h1 class="card-title display-4 d-flex justify-content-between align-items-center">Lista de productos en Almacen
+          <a href="/products/deliver" class="d-flex justify-content-center">
+            <i class="fas fa-plus-square" style="color: #2780e3 "></i>
+          </a>
+        </h1>
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Código</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Piezas</th>
+              <th scope="col">Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each items}}
+              <tr>
+                <td>{{idProducto.codigo}}</td>
+                <td>{{idProducto.nombre}}</td>
+                <td>{{idProducto.piezas}}</td>
+                <td>{{cantidad}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {{else}}
+    <div class="card mx-auto">
+      <div class="card-body">
+        <p class="lead">No hay productos en stock</p>
+        <a href="/product/deliver" class="btn btn-success btn-block">Entregar producto</a>
+      </div>
+    </div>
+  {{/if}}
+</div>

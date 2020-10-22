@@ -17,6 +17,9 @@
               <button class="btn btn-primary btn-block btn-sm">Cerrado</button>
             {{/if}}
           </p>
+          <p>
+            <a href="/products/stock/{{_id}}" class="btn btn-primary btn-block btn-sm">Almacen</a>
+          </p>
           <form action="/shops/delete/{{_id}}?_method=DELETE" method="POST">
             <input type="hidden" name="_method" id="DELETE">
             <button class="btn btn-danger btn-block btn-sm" type="submit">Eliminar</button>

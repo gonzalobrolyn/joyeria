@@ -3,6 +3,8 @@ const router = express.Router()
 
 const Product = require('../models/Product')
 const Value = require('../models/Value')
+const Shop = require('../models/Shop')
+const Stock = require('../models/Stock')
 const {isAuthenticated} = require('../helpers/auth')
 
 router.get('/products/add', isAuthenticated, async (req, res) => {
@@ -134,6 +136,51 @@ router.get('/products/delete/:id', isAuthenticated, async (req, res) => {
   res.redirect('/products')
 })
 
+router.get('/products/deliver', isAuthenticated, async (req, res) => {
+  res.render('products/deliver-product')
+})
+
+router.post('/products/search-deliver', isAuthenticated, async (req, res) => {
+  const {buscar} = req.body
+  let listProducts = []
+  const products = []
+  const obj = {}
+  listProducts = listProducts.concat(await Product.find({codigo: new RegExp(buscar,'i')}).lean())
+  listProducts = listProducts.concat(await Product.find({nombre: new RegExp(buscar,'i')}).lean())
+  listProducts.forEach(elem => {
+    if (!(elem._id in obj)){
+      obj[elem._id] = true
+      products.push(elem)
+    }
+  })
+  products.forEach(elem => { if(elem.precio){elem.precio = elem.precio.toFixed(2)} })
+  products.forEach( async elem => { if(elem.tipo){
+    const valoracion = await Value.findById(elem.valoracion).lean()
+    elem.valoracion = valoracion.precio.toFixed(2)
+    elem.precio = (elem.peso * elem.valoracion).toFixed(2)
+  } })
+  res.render('products/deliver-product', {products})
+})
+
+router.get('/products/add-deliver/:id', isAuthenticated, async (req, res) => {
+  const product = await Product.findById(req.params.id).lean()
+  const shops = await Shop.find().lean()
+  res.render('products/deliver-product', {product, shops})
+})
+
+router.post('/products/new-deliver', isAuthenticated, async (req, res) => {
+  const {idProducto, cantidad, idLocal} = req.body
+  const newItem = new Stock({idProducto, cantidad, idLocal})
+  await newItem.save()
+  req.flash('success_msg', 'Producto entregado correctamente')
+  res.redirect('/products/stock/'+idLocal)
+})
+
+router.get('/products/stock/:id', isAuthenticated, async (req, res) => {
+  const items = await Stock.find({idLocal: req.params.id}).populate('idProducto').lean()
+  res.render('products/stock-products', {items})
+})
+
 router.post('/products/search-product', isAuthenticated, async (req, res) => {
   const {buscar} = req.body
   let listProducts = []
@@ -147,7 +194,6 @@ router.post('/products/search-product', isAuthenticated, async (req, res) => {
       products.push(elem)
     }
   })
-  console.log(products)
   res.render('sales/sale', {products})
 })
 
