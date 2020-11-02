@@ -18,12 +18,15 @@
             {{/if}}
           </p>
           <p>
-            <a href="/products/stock/{{_id}}" class="btn btn-primary btn-block btn-sm">Almacen</a>
+            <a href="/products/stock/{{_id}}" class="btn btn-primary btn-block btn-sm">Productos</a>
           </p>
-          <form action="/shops/delete/{{_id}}?_method=DELETE" method="POST">
+          
+          <button class="btn btn-danger btn-block btn-sm">Eliminar</button>
+          {{!-- <form action="/shops/delete/{{_id}}?_method=DELETE" method="POST">
             <input type="hidden" name="_method" id="DELETE">
             <button class="btn btn-danger btn-block btn-sm" type="submit">Eliminar</button>
-          </form>
+          </form> --}}
+
         </div>
       </div>
     </div>

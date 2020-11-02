@@ -170,15 +170,49 @@ router.get('/products/add-deliver/:id', isAuthenticated, async (req, res) => {
 
 router.post('/products/new-deliver', isAuthenticated, async (req, res) => {
   const {idProducto, cantidad, idLocal} = req.body
-  const newItem = new Stock({idProducto, cantidad, idLocal})
-  await newItem.save()
-  req.flash('success_msg', 'Producto entregado correctamente')
-  res.redirect('/products/stock/'+idLocal)
+  const stock = await Stock.findOne({idProducto: idProducto}).where({idLocal: idLocal}).lean()
+  if (stock){
+    stock.cantidad = stock.cantidad + parseInt(cantidad)
+    await Stock.findByIdAndUpdate(stock._id, {cantidad: stock.cantidad})
+    req.flash('success_msg', 'Producto entregado correctamente')
+    res.redirect('/products/stock/'+idLocal)
+  } else {
+    const newItem = new Stock({idProducto, cantidad, idLocal})
+    await newItem.save()
+    req.flash('success_msg', 'Producto entregado correctamente')
+    res.redirect('/products/stock/'+idLocal)
+  }
 })
 
 router.get('/products/stock/:id', isAuthenticated, async (req, res) => {
   const items = await Stock.find({idLocal: req.params.id}).populate('idProducto').lean()
-  res.render('products/stock-products', {items})
+  const shop = await Shop.findById(req.params.id).lean()
+  res.render('products/stock-products', {items, shop})
+})
+
+router.get('/products/stock-deliver/:id', isAuthenticated, async (req, res) => {
+  const item = await Stock.findById(req.params.id).populate('idProducto').populate('idLocal').lean()
+  const shops = await Shop.find().lean()
+  res.render('products/distribute-product', {item, shops})
+})
+
+router.post('/products/new-distribute', isAuthenticated, async (req, res) => {
+  const {idStock, idProducto, cantActual, cantidad, idLocal} = req.body
+  const nuevaCant = parseInt(cantActual) - parseInt(cantidad) 
+  await Stock.findByIdAndUpdate(idStock, {cantidad: nuevaCant})
+
+  const stock = await Stock.findOne({idProducto: idProducto}).where({idLocal: idLocal}).lean()
+  if (stock){
+    stock.cantidad = stock.cantidad + parseInt(cantidad)
+    await Stock.findByIdAndUpdate(stock._id, {cantidad: stock.cantidad})
+    req.flash('success_msg', 'Producto entregado correctamente')
+    res.redirect('/products/stock/'+idLocal)
+  } else {
+    const newItem = new Stock({idProducto, cantidad, idLocal})
+    await newItem.save()
+    req.flash('success_msg', 'Producto entregado correctamente')
+    res.redirect('/products/stock/'+idLocal)
+  }
 })
 
 router.post('/products/search-product', isAuthenticated, async (req, res) => {

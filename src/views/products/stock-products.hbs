@@ -2,7 +2,7 @@
   {{#if items}}
     <div class="card w-100">
       <div class="card-body">
-        <h1 class="card-title display-4 d-flex justify-content-between align-items-center">Lista de productos en Almacen
+        <h1 class="card-title display-4 d-flex justify-content-between align-items-center">Lista de productos en {{shop.nombre}}
           <a href="/products/deliver" class="d-flex justify-content-center">
             <i class="fas fa-plus-square" style="color: #2780e3 "></i>
           </a>
@@ -14,6 +14,7 @@
               <th scope="col">Nombre</th>
               <th scope="col">Piezas</th>
               <th scope="col">Cantidad</th>
+              <th scope="col">Entregar</th>
             </tr>
           </thead>
           <tbody>
@@ -23,6 +24,11 @@
                 <td>{{idProducto.nombre}}</td>
                 <td>{{idProducto.piezas}}</td>
                 <td>{{cantidad}}</td>
+                <td>
+                  <a href="/products/stock-deliver/{{_id}}" class="d-flex justify-content-center">
+                    <i class="fas fa-share-square"></i>
+                  </a>
+                </td>
               </tr>
             {{/each}}
           </tbody>
@@ -33,7 +39,7 @@
     <div class="card mx-auto">
       <div class="card-body">
         <p class="lead">No hay productos en stock</p>
-        <a href="/product/deliver" class="btn btn-success btn-block">Entregar producto</a>
+        <a href="/products/deliver" class="btn btn-success btn-block">Entregar producto</a>
       </div>
     </div>
   {{/if}}

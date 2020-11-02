@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const User = require('../models/User')
-
+const {isAuthenticated} = require('../helpers/auth')
 const passport = require('passport')
 
 router.get('/users/signin', (req, res) => {
@@ -15,11 +15,11 @@ router.post('/users/signin', passport.authenticate('local', {
   failureFlash: true
 }))
 
-router.get('/users/signup', (req, res) => {
+router.get('/users/signup', isAuthenticated, (req, res) => {
   res.render('users/signup')
 })
 
-router.post('/users/signup', async (req, res) => {
+router.post('/users/signup', isAuthenticated, async (req, res) => {
   const {nombre, apellido, dni, clave, confirma_clave, cargo} = req.body
   const errors = []
   if(!nombre) {
@@ -61,18 +61,18 @@ router.post('/users/signup', async (req, res) => {
   }
 })
 
-router.get('/users', async (req, res) => {
+router.get('/users', isAuthenticated, async (req, res) => {
   const users = await User.find().lean()
   res.render('users/all-users', {users})
 })
 
-router.delete('/users/delete/:id', async (req, res) => {
+router.delete('/users/delete/:id', isAuthenticated, async (req, res) => {
   await User.findByIdAndDelete(req.params.id)
   req.flash('success_msg', 'Usuario eliminado correctamente')
   res.redirect('/users')
 })
 
-router.get('/users/logout', (req, res) => {
+router.get('/users/logout', isAuthenticated, (req, res) => {
   req.logout()
   res.redirect('/')
 })

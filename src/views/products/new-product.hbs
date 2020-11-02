@@ -6,10 +6,10 @@
     <div class="card-body">
       <form action="/products/new-product" method="POST">
         <div class="form-group">
-          <input type="text" name="codigo" class="form-control" placeholder="Código del Producto" value="{{codigo}}">
+          <input type="text" name="codigo" class="form-control" placeholder="Código del Producto" autofocus value="{{codigo}}">
         </div>
         <div class="form-group">
-          <input type="text" name="nombre" class="form-control" placeholder="Nombre de Producto" autofocus value="{{nombre}}">
+          <input type="text" name="nombre" class="form-control" placeholder="Nombre de Producto" value="{{nombre}}">
         </div>
         <div class="form-group">
           <input type="number" name="piezas" class="form-control" placeholder="Numero de Piezas" min="1" value="{{piezas}}">
@@ -27,11 +27,11 @@
         </div>
 
         <div class="form-group" id="precio">
-          <input type="number" name="precio" class="form-control" placeholder="Precio del Producto">
+          <input type="number" name="precio" class="form-control" placeholder="Precio del Producto" step="0.01">
         </div>
 
         <div class="form-group" id="peso">
-          <input type="number" name="peso" class="form-control" placeholder="Peso del Producto">
+          <input type="number" name="peso" class="form-control" placeholder="Peso del Producto" step="0.01">
         </div>
         <div class="form-group" id="valoracion">
           <select name="valoracion" class="form-control">
