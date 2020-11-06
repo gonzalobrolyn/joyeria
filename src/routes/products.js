@@ -57,7 +57,7 @@ router.post('/products/new-product', isAuthenticated, async (req, res) => {
 })
 
 router.get('/products', isAuthenticated, async (req, res) => {
-  const products = await Product.find().lean().sort({fecha: 'desc'})
+  const products = await Product.find().lean().sort({codigo: 'asc'})
   products.forEach(elem => { if(elem.precio){elem.precio = elem.precio.toFixed(2)} })
   products.forEach( async elem => { if(elem.tipo){
     const valoracion = await Value.findById(elem.valoracion).lean()
@@ -215,8 +215,21 @@ router.post('/products/new-distribute', isAuthenticated, async (req, res) => {
   }
 })
 
-router.post('/products/search-product', isAuthenticated, async (req, res) => {
+router.get('/products/stock-quantity/:id', isAuthenticated, async (req, res) => {
+  const item = await Stock.findById(req.params.id).populate('idProducto').populate('idLocal').lean()
+  res.render('products/quantity-product', {item})
+})
+
+router.post('/products/update-quantity', isAuthenticated, async (req, res) => {
+  const {idStock, idLocal, cantidad} = req.body
+  await Stock.findByIdAndUpdate(idStock, {cantidad: cantidad})
+  req.flash('success_msg', 'Cantidad corregida correctamente')
+  res.redirect('/products/stock/'+idLocal)
+})
+
+router.post('/products/search-product/:idLocal', isAuthenticated, async (req, res) => {
   const {buscar} = req.body
+  const idLocal = req.params.idLocal
   let listProducts = []
   const products = []
   const obj = {}
@@ -228,7 +241,14 @@ router.post('/products/search-product', isAuthenticated, async (req, res) => {
       products.push(elem)
     }
   })
-  res.render('sales/sale', {products})
+  products.forEach(elem => { if(elem.precio){elem.precio = elem.precio.toFixed(2)} })
+  products.forEach( async elem => { if(elem.tipo){
+    const valoracion = await Value.findById(elem.valoracion).lean()
+    elem.valoracion = valoracion.precio.toFixed(2)
+    elem.precio = (elem.peso * elem.valoracion).toFixed(2)
+  } })
+  const local = await Shop.findById(idLocal).lean()
+  res.render('sales/sale', {products, local})
 })
 
 module.exports = router

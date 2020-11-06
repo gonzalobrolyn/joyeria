@@ -12,6 +12,7 @@
           <p>{{direccion}}</p>
           <p class="m-0">
             {{#if estado}}
+              <a href="/shops/getin-shop/{{_id}}" class="btn btn-outline-success btn-block">Continuar ventas</a>
               <button class="btn btn-outline-danger btn-block">Tienda Abierta</button>
             {{else}}
               <a href="/shops/open-shop/{{_id}}" class="btn btn-outline-success btn-block">Abrir Tienda</a>

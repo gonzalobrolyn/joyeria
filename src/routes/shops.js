@@ -33,15 +33,20 @@ router.post('/shops/new-shop', isAuthenticated, async (req, res) => {
 
 router.get('/select', isAuthenticated, async (req, res) => {
   const shops = await Shop.find().lean()
+  shops.shift()
   res.render('shops/select', {shops})
 })
 
 router.get('/shops/open-shop/:id', isAuthenticated, async (req, res) => {
-  const llave = req.params.id
+  const idLocal = req.params.id
   const estado = 1
-  req.user.clave = llave
-  await Shop.findByIdAndUpdate(llave, {estado})
-  res.redirect('/sales')
+  await Shop.findByIdAndUpdate(idLocal, {estado})
+  res.redirect('/sales/'+idLocal)
+})
+
+router.get('/shops/getin-shop/:id', isAuthenticated, async (req, res) => {
+  const idLocal = req.params.id
+  res.redirect('/sales/'+idLocal)
 })
 
 router.get('/shops', isAuthenticated, async (req, res) => {
@@ -59,6 +64,13 @@ router.put('/shops/edit-shop/:id', isAuthenticated, async (req, res) => {
   await Shop.findByIdAndUpdate(req.params.id, {nombre, direccion})
   req.flash('success_msg', 'Tienda actualizada correctamente')
   res.redirect('/shops')
+})
+
+router.get('/shops/close-shop/:id', isAuthenticated, async (req, res) => {
+  const idLocal = req.params.id
+  const estado = 0
+  await Shop.findByIdAndUpdate(idLocal, {estado})
+  res.redirect('/select')
 })
 
 router.delete('/shops/delete/:id', isAuthenticated, async (req, res) => {

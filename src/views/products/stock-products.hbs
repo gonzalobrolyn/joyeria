@@ -3,6 +3,9 @@
     <div class="card w-100">
       <div class="card-body">
         <h1 class="card-title display-4 d-flex justify-content-between align-items-center">Lista de productos en {{shop.nombre}}
+          <a href="/shops" class="btn btn-outline-primary btn-lg d-flex justify-content-center">
+            Listar Tiendas
+          </a>
           <a href="/products/deliver" class="d-flex justify-content-center">
             <i class="fas fa-plus-square" style="color: #2780e3 "></i>
           </a>
@@ -15,6 +18,7 @@
               <th scope="col">Piezas</th>
               <th scope="col">Cantidad</th>
               <th scope="col">Entregar</th>
+              <th scope="col">Corregir</th>
             </tr>
           </thead>
           <tbody>
@@ -27,6 +31,11 @@
                 <td>
                   <a href="/products/stock-deliver/{{_id}}" class="d-flex justify-content-center">
                     <i class="fas fa-share-square"></i>
+                  </a>
+                </td>
+                <td>
+                  <a href="/products/stock-quantity/{{_id}}" class="d-flex justify-content-center">
+                    <i class="fas fa-edit" style="color: red"></i>
                   </a>
                 </td>
               </tr>
