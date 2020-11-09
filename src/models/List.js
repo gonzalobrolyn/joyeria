@@ -1,14 +1,11 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose
 
-const SaleSquema = new Schema ({
+const ListSchema = new Schema ({
   idLocal: {type: Schema.ObjectId, ref: 'Shop'},
   idProducto: {type: Schema.ObjectId, ref: 'Product'},
   cantidad: {type: Number, required: true},
-  precio: {type: Number, required: true},
-  fecha: {type: Date, required: true},
-  vendedor: {type: String, required: true}
+  precio: {type: Number, required: true}
 })
 
-module.exports = mongoose.model('Sale', SaleSquema)
-
+module.exports = mongoose.model('List', ListSchema)

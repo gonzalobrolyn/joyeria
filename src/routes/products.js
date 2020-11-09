@@ -5,6 +5,7 @@ const Product = require('../models/Product')
 const Value = require('../models/Value')
 const Shop = require('../models/Shop')
 const Stock = require('../models/Stock')
+const List = require('../models/List')
 const {isAuthenticated} = require('../helpers/auth')
 
 router.get('/products/add', isAuthenticated, async (req, res) => {
@@ -241,14 +242,22 @@ router.post('/products/search-product/:idLocal', isAuthenticated, async (req, re
       products.push(elem)
     }
   })
-  products.forEach(elem => { if(elem.precio){elem.precio = elem.precio.toFixed(2)} })
+  products.forEach(elem => { if(elem.precio){
+    elem.precio = elem.precio.toFixed(2)
+    elem.fecha = idLocal
+  } })
   products.forEach( async elem => { if(elem.tipo){
     const valoracion = await Value.findById(elem.valoracion).lean()
     elem.valoracion = valoracion.precio.toFixed(2)
     elem.precio = (elem.peso * elem.valoracion).toFixed(2)
+    elem.fecha = idLocal
   } })
   const local = await Shop.findById(idLocal).lean()
-  res.render('sales/sale', {products, local})
+  const lista = await List.find().where({idLocal: idLocal}).populate('idProducto').populate('idLocal').lean()
+  lista.forEach(elem => { if(elem.precio){
+    elem.precio = elem.precio.toFixed(2)
+  } })
+  res.render('sales/sale', {products, local, lista})
 })
 
 module.exports = router

@@ -69,7 +69,8 @@ router.put('/shops/edit-shop/:id', isAuthenticated, async (req, res) => {
 router.get('/shops/close-shop/:id', isAuthenticated, async (req, res) => {
   const idLocal = req.params.id
   const estado = 0
-  await Shop.findByIdAndUpdate(idLocal, {estado})
+  const efectivo = 0
+  await Shop.findByIdAndUpdate(idLocal, {estado, efectivo})
   res.redirect('/select')
 })
 
