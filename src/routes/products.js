@@ -256,6 +256,7 @@ router.post('/products/search-product/:idLocal', isAuthenticated, async (req, re
   const lista = await List.find().where({idLocal: idLocal}).populate('idProducto').populate('idLocal').lean()
   lista.forEach(elem => { if(elem.precio){
     elem.precio = elem.precio.toFixed(2)
+    elem.precioVenta = elem.precioVenta.toFixed(2)
   } })
   res.render('sales/sale', {products, local, lista})
 })

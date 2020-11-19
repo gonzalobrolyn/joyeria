@@ -72,8 +72,9 @@
                 <th scope="col">Quitar</th>
                 <th scope="col">Código</th>
                 <th scope="col">Producto</th>
-                <th scope="col">Cantidad</th>
+                <th scope="col">Cant.</th>
                 <th scope="col">Precio</th>
+                <th scope="col">Precio Venta</th>
               </tr>
             </thead>
             <tbody>
@@ -92,6 +93,21 @@
                   </td>
                   <td>{{cantidad}}</td>
                   <td>S/ {{precio}}</td>
+                  <td>
+                    <form action="/sales/discount" method="POST" class="form-group">
+                      <div class="form-group">
+                        <div class="input-group mb-3">
+                          <input type="text" name="idItem" hidden value="{{_id}}">
+                          <input type="number" name="precioVenta" class="form-control" value="{{precioVenta}}" step="0.01" style="width: 90px;">
+                          <div class="input-group-append">
+                            <button type="submit" class="input-group-text">
+                              <i class="fas fa-thumbs-up" style="color: cyan;"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </td>
                 </tr>
               {{/each}}
             </tbody>

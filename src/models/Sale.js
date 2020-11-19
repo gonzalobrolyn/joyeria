@@ -6,6 +6,7 @@ const SaleSquema = new Schema ({
   idProducto: {type: Schema.ObjectId, ref: 'Product'},
   cantidad: {type: Number, required: true},
   precio: {type: Number, required: true},
+  precioVenta: {type: Number},
   fecha: {type: Date, required: true},
   vendedor: {type: String, required: true}
 })
