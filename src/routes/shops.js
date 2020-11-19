@@ -5,7 +5,11 @@ const Shop = require('../models/Shop')
 const {isAuthenticated} = require('../helpers/auth')
 
 router.get('/shops/add', isAuthenticated, (req, res) => {
-  res.render('shops/new-shop')
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('shops/new-shop', {admin})
 })
 
 router.post('/shops/new-shop', isAuthenticated, async (req, res) => {
@@ -33,8 +37,12 @@ router.post('/shops/new-shop', isAuthenticated, async (req, res) => {
 
 router.get('/select', isAuthenticated, async (req, res) => {
   const shops = await Shop.find().lean()
-  shops.shift()
-  res.render('shops/select', {shops})
+  shops.shift() // elimina el elemento en el indice 0
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('shops/select', {shops, admin})
 })
 
 router.get('/shops/open-shop/:id', isAuthenticated, async (req, res) => {
@@ -51,12 +59,20 @@ router.get('/shops/getin-shop/:id', isAuthenticated, async (req, res) => {
 
 router.get('/shops', isAuthenticated, async (req, res) => {
   const shops = await Shop.find().lean()
-  res.render('shops/all-shops', {shops})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('shops/all-shops', {shops, admin})
 })
 
 router.get('/shops/edit/:id', isAuthenticated, async (req, res) => {
   const shop = await Shop.findById(req.params.id).lean()
-  res.render('shops/edit-shop', {shop})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('shops/edit-shop', {shop, admin})
 })
 
 router.put('/shops/edit-shop/:id', isAuthenticated, async (req, res) => {

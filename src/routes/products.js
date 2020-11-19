@@ -11,7 +11,11 @@ const {isAuthenticated} = require('../helpers/auth')
 router.get('/products/add', isAuthenticated, async (req, res) => {
   const values = await Value.find().lean().sort({fecha: 'asc'})
   values.forEach(elem => elem.precio = elem.precio.toFixed(2))
-  res.render('products/new-product', {values})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/new-product', {values, admin})
 })
 
 router.post('/products/new-product', isAuthenticated, async (req, res) => {
@@ -42,12 +46,16 @@ router.post('/products/new-product', isAuthenticated, async (req, res) => {
   if(errors.length > 0){
     const values = await Value.find().lean().sort({fecha: 'asc'})
     values.forEach(elem => elem.precio = elem.precio.toFixed(2))
+    const sesion = req.user
+    if (sesion.cargo == 'Administrador'){
+      var admin = 'SI'
+    }
     res.render('products/new-product', {
       errors,
       nombre,
       piezas,
       tipo,
-      values
+      values, admin
     })
   } else {
     const newProduct = new Product({codigo, nombre, piezas, tipo, precio, peso, valoracion})
@@ -65,18 +73,26 @@ router.get('/products', isAuthenticated, async (req, res) => {
     elem.valoracion = valoracion.precio.toFixed(2)
     elem.precio = (elem.peso * elem.valoracion).toFixed(2)
   } })
-  res.render('products/all-products', {products})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/all-products', {products, admin})
 })
 
 router.get('/products/edit/:id', isAuthenticated, async (req, res) => {
   const product = await Product.findById(req.params.id).lean()
   const values = await Value.find().lean().sort({fecha: 'asc'})
   values.forEach(elem => elem.precio = elem.precio.toFixed(2))
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
   if(product.valoracion){
     const value = await Value.findById(product.valoracion).lean()
-    res.render('products/edit-product', {product, values, value})
+    res.render('products/edit-product', {product, values, value, admin})
   } else {
-    res.render('products/edit-product', {product, values})
+    res.render('products/edit-product', {product, values, admin})
   }
 })
 
@@ -116,12 +132,15 @@ router.put('/products/edit-product/:id', isAuthenticated, async (req, res) => {
     const product = {_id, codigo, nombre, piezas, tipo, precio, peso, valoracion}
     const values = await Value.find().lean().sort({fecha: 'asc'})
     values.forEach(elem => elem.precio = elem.precio.toFixed(2))
-    
+    const sesion = req.user
+    if (sesion.cargo == 'Administrador'){
+      var admin = 'SI'
+    }
     if(product.valoracion){
       const value = await Value.findById(product.valoracion).lean()
-      res.render('products/edit-product', {errors, product, values, value})
+      res.render('products/edit-product', {errors, product, values, value, admin})
     } else {
-      res.render('products/edit-product', {errors, product, values})
+      res.render('products/edit-product', {errors, product, values, admin})
     }
 
   } else {
@@ -138,7 +157,11 @@ router.get('/products/delete/:id', isAuthenticated, async (req, res) => {
 })
 
 router.get('/products/deliver', isAuthenticated, async (req, res) => {
-  res.render('products/deliver-product')
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/deliver-product', {admin})
 })
 
 router.post('/products/search-deliver', isAuthenticated, async (req, res) => {
@@ -160,13 +183,21 @@ router.post('/products/search-deliver', isAuthenticated, async (req, res) => {
     elem.valoracion = valoracion.precio.toFixed(2)
     elem.precio = (elem.peso * elem.valoracion).toFixed(2)
   } })
-  res.render('products/deliver-product', {products})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/deliver-product', {products, admin})
 })
 
 router.get('/products/add-deliver/:id', isAuthenticated, async (req, res) => {
   const product = await Product.findById(req.params.id).lean()
   const shops = await Shop.find().lean()
-  res.render('products/deliver-product', {product, shops})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/deliver-product', {product, shops, admin})
 })
 
 router.post('/products/new-deliver', isAuthenticated, async (req, res) => {
@@ -188,13 +219,21 @@ router.post('/products/new-deliver', isAuthenticated, async (req, res) => {
 router.get('/products/stock/:id', isAuthenticated, async (req, res) => {
   const items = await Stock.find({idLocal: req.params.id}).populate('idProducto').lean()
   const shop = await Shop.findById(req.params.id).lean()
-  res.render('products/stock-products', {items, shop})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/stock-products', {items, shop, admin})
 })
 
 router.get('/products/stock-deliver/:id', isAuthenticated, async (req, res) => {
   const item = await Stock.findById(req.params.id).populate('idProducto').populate('idLocal').lean()
   const shops = await Shop.find().lean()
-  res.render('products/distribute-product', {item, shops})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/distribute-product', {item, shops, admin})
 })
 
 router.post('/products/new-distribute', isAuthenticated, async (req, res) => {
@@ -218,7 +257,11 @@ router.post('/products/new-distribute', isAuthenticated, async (req, res) => {
 
 router.get('/products/stock-quantity/:id', isAuthenticated, async (req, res) => {
   const item = await Stock.findById(req.params.id).populate('idProducto').populate('idLocal').lean()
-  res.render('products/quantity-product', {item})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('products/quantity-product', {item, admin})
 })
 
 router.post('/products/update-quantity', isAuthenticated, async (req, res) => {
@@ -258,7 +301,11 @@ router.post('/products/search-product/:idLocal', isAuthenticated, async (req, re
     elem.precio = elem.precio.toFixed(2)
     elem.precioVenta = elem.precioVenta.toFixed(2)
   } })
-  res.render('sales/sale', {products, local, lista})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('sales/sale', {products, local, lista, admin})
 })
 
 module.exports = router

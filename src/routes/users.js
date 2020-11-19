@@ -16,7 +16,11 @@ router.post('/users/signin', passport.authenticate('local', {
 }))
 
 router.get('/users/signup', isAuthenticated, (req, res) => {
-  res.render('users/signup')
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('users/signup', {admin})
 })
 
 router.post('/users/signup', isAuthenticated, async (req, res) => {
@@ -63,7 +67,11 @@ router.post('/users/signup', isAuthenticated, async (req, res) => {
 
 router.get('/users', isAuthenticated, async (req, res) => {
   const users = await User.find().lean()
-  res.render('users/all-users', {users})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('users/all-users', {users, admin})
 })
 
 router.delete('/users/delete/:id', isAuthenticated, async (req, res) => {

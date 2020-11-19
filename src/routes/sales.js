@@ -18,7 +18,11 @@ router.get('/sales/:idLocal', isAuthenticated, async (req, res) => {
     elem.precio = elem.precio.toFixed(2)
     elem.precioVenta = elem.precioVenta.toFixed(2) 
   } })
-  res.render('sales/sale', {local, lista})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('sales/sale', {local, lista, admin})
 })
 
 router.get('/sales/product-sale/:idLocal/:idProducto', isAuthenticated, async (req, res) => {
@@ -72,6 +76,10 @@ router.get('/sales/to-sell/:idLocal', isAuthenticated, async (req, res) => {
     await List.findByIdAndDelete(elem._id)
   })
   res.redirect('/sales/'+idLocal)
+})
+
+router.get('/sales/diario', isAuthenticated, async (req, res) => {
+  res.send('algo')
 })
 
 module.exports = router

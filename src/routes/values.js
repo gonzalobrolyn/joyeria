@@ -5,7 +5,11 @@ const Value = require('../models/Value')
 const {isAuthenticated} = require('../helpers/auth')
 
 router.get('/values/add', isAuthenticated, (req, res) => {
-  res.render('values/new-value')
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('values/new-value', {admin})
 })
 
 router.post('/values/new-value', isAuthenticated, async (req, res) => {
@@ -34,13 +38,21 @@ router.post('/values/new-value', isAuthenticated, async (req, res) => {
 router.get('/values', isAuthenticated, async (req, res) => {
   const values = await Value.find().lean()
   values.forEach(elem => elem.precio = elem.precio.toFixed(2)) 
-  res.render('values/all-values', {values})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('values/all-values', {values, admin})
 })
 
 router.get('/values/edit/:id', isAuthenticated, async (req, res) => {
   const value = await Value.findById(req.params.id).lean()
   value.precio = value.precio.toFixed(2)
-  res.render('values/edit-value', {value})
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  res.render('values/edit-value', {value, admin})
 })
 
 router.put('/values/edit-value/:id', isAuthenticated, async (req, res) => {

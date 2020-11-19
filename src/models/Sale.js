@@ -7,6 +7,7 @@ const SaleSquema = new Schema ({
   cantidad: {type: Number, required: true},
   precio: {type: Number, required: true},
   precioVenta: {type: Number},
+  estado: {type: String},
   fecha: {type: Date, required: true},
   vendedor: {type: String, required: true}
 })
