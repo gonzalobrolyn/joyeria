@@ -82,19 +82,18 @@ router.get('/sales/to-sell/:idLocal', isAuthenticated, async (req, res) => {
 router.get('/sales/history/:idLocal', isAuthenticated, async (req, res) => {
   const idLocal = req.params.idLocal
   var total = 0
-  // const ventas = await Sale.find().where({idLocal: idLocal}).where({estado: 'enDiario'}).populate('idProducto').lean()
-  const ventas = await Sale.find().where({idLocal: idLocal}).populate('idProducto').lean()
-  // ventas.forEach(elem => {
-  //   elem.precio = elem.precio.toFixed(2)
-  //   total = total + elem.precioVenta
-  //   elem.precioVenta = elem.precioVenta.toFixed(2)
-  // })
-  // const sesion = req.user
-  // if (sesion.cargo == 'Administrador'){
-  //   var admin = 'SI'
-  // }
-  // total = total.toFixed(2)
-  res.render('sales/history', {ventas})
+  const ventas = await Sale.find().where({idLocal: idLocal}).where({estado: 'enDiario'}).populate('idProducto').lean()
+  ventas.forEach(elem => {
+    elem.precio = elem.precio.toFixed(2)
+    total = total + elem.precioVenta
+    elem.precioVenta = elem.precioVenta.toFixed(2)
+  })
+  const sesion = req.user
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  total = total.toFixed(2)
+  res.render('sales/history', {ventas, admin, total})
 })
 
 module.exports = router

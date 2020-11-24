@@ -217,7 +217,7 @@ router.post('/products/new-deliver', isAuthenticated, async (req, res) => {
 })
 
 router.get('/products/stock/:id', isAuthenticated, async (req, res) => {
-  const items = await Stock.find({idLocal: req.params.id}).populate('idProducto').lean()
+  const items = await Stock.find({idLocal: req.params.id}).populate('idProducto').lean().sort({codigo: 'asc'})
   const shop = await Shop.findById(req.params.id).lean()
   const sesion = req.user
   if (sesion.cargo == 'Administrador'){

@@ -10,7 +10,6 @@
           <thead>
             <tr>
               <th scope="col">Código</th>
-              <th scope="col">fecha</th>
               <th scope="col">Producto</th>
               <th scope="col">Piezas</th>
               <th scope="col">Precio sugerido</th>
@@ -22,7 +21,6 @@
             {{#each ventas}}
               <tr>
                 <td>{{idProducto.codigo}}</td>
-                <td>{{fecha}}</td>
                 <td>{{idProducto.nombre}}
                   {{#if idProducto.peso}}
                     {{idProducto.peso}} gr.
