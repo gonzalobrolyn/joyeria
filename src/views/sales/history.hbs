@@ -1,0 +1,56 @@
+<div class="row">
+  {{#if ventas}}
+    <div class="card w-100">
+      <div class="card-body">
+        <h1 class="card-title display-4 d-flex justify-content-between align-items-center">Lista de productos vendidos
+          <a href="/shops" class="btn btn-outline-success">Listar tiendas</a>
+          {{!-- <a href="/shops/close-shop/{{idLocal}}" class="btn btn-outline-primary">Cerrar Tienda</a> --}}
+        </h1>
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Código</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Piezas</th>
+              <th scope="col">Precio sugerido</th>
+              <th scope="col">Precio de venta</th>
+              <th scope="col">Editar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each ventas}}
+              <tr>
+                <td>{{idProducto.codigo}}</td>
+                <td>{{idProducto.nombre}}
+                  {{#if idProducto.peso}}
+                    {{idProducto.peso}} gr.
+                  {{/if}}   
+                </td>
+                <td>{{idProducto.piezas}}</td>
+                <td>S/ {{precio}}</td>
+                <td>S/ {{precioVenta}}</td>
+                <td>
+                  <a href="#" class="d-flex justify-content-center">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                </td>
+              </tr>
+            {{/each}}
+              <tr>
+                <td colspan="3"></td>
+                <td>Total ventas:</td>
+                <td><h3>{{total}}</h3></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {{else}}
+    <div class="card mx-auto">
+      <div class="card-body">
+        <p class="lead">No hay productos vendidos</p>
+        <a href="/select" class="btn btn-success btn-block">Vender Producto</a>
+      </div>
+    </div>
+  {{/if}}
+</div>

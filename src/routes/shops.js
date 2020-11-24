@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Shop = require('../models/Shop')
+const Sale = require('../models/Sale')
 const {isAuthenticated} = require('../helpers/auth')
 
 router.get('/shops/add', isAuthenticated, (req, res) => {
@@ -86,6 +87,12 @@ router.get('/shops/close-shop/:id', isAuthenticated, async (req, res) => {
   const idLocal = req.params.id
   const estado = 0
   const efectivo = 0
+  const estadoVenta = 'entregado'
+  // const listaVentas = await Sale.find().where({idLocal: idLocal}).where({estado: 'enDiario'}).lean()
+  const listaVentas = await Sale.find().where({idLocal: idLocal}).lean()
+  listaVentas.forEach(async elem => {
+    await Sale.findByIdAndUpdate(elem._id, {estado: estadoVenta})
+  })
   await Shop.findByIdAndUpdate(idLocal, {estado, efectivo})
   res.redirect('/select')
 })
