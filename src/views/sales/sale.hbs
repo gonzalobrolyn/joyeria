@@ -1,6 +1,10 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8">
     <h1 class="display-4 mx-auto">{{local.nombre}}</h1>
+  </div>
+  <div class="col-md-4 mx-auto">
+    <p></p>
+    <button class="btn btn-outline-danger">Registrar Adelantos</button>
   </div>
 </div>
 <div class="row">
@@ -112,7 +116,8 @@
               {{/each}}
             </tbody>
           </table>
-          <a href="/sales/to-sell/{{local._id}}" class="btn btn-outline-success">Generar Venta</a>
+          <a href="/sales/to-sell/{{local._id}}" class="btn btn-outline-success btn-lg">Generar Venta - Pago en Efectivo</a>
+          {{!-- <a href="/sales/to-sell-card/{{local._id}}" class="btn btn-outline-primary btn-lg">Generar Venta - Pago con Tarjeta</a> --}}
         </div>
       </div>
     {{else}}
