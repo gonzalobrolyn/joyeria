@@ -114,10 +114,16 @@
                   </td>
                 </tr>
               {{/each}}
+              <tr>
+                <td colspan="3"></td>
+                <td><h3>TOTAL:</h3></td>
+                <td><h3>S/ </h3></td>
+                <td><h3>{{sumaVenta}}</h3></td>
+              </tr>
             </tbody>
           </table>
-          <a href="/sales/to-sell/{{local._id}}" class="btn btn-outline-success btn-lg">Generar Venta - Pago en Efectivo</a>
-          {{!-- <a href="/sales/to-sell-card/{{local._id}}" class="btn btn-outline-primary btn-lg">Generar Venta - Pago con Tarjeta</a> --}}
+          <a href="/sales/to-sell-cash/{{local._id}}" class="btn btn-outline-success btn-lg">Generar Venta - Pago en Efectivo</a>
+          <a href="/sales/to-sell-card/{{local._id}}" class="btn btn-outline-primary btn-lg">Generar Venta - Pago con Tarjeta</a>
         </div>
       </div>
     {{else}}

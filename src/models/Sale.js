@@ -8,6 +8,7 @@ const SaleSquema = new Schema ({
   precio: {type: Number, required: true},
   precioVenta: {type: Number},
   estado: {type: String},
+  formaPago: {type: String},
   fecha: {type: Date, required: true},
   vendedor: {type: String, required: true}
 })

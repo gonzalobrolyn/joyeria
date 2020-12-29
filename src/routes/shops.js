@@ -87,12 +87,13 @@ router.get('/shops/close-shop/:id', isAuthenticated, async (req, res) => {
   const idLocal = req.params.id
   const estado = 0
   const efectivo = 0
+  const tarjeta = 0
   const estadoVenta = 'entregado'
   const listaVentas = await Sale.find().where({idLocal: idLocal}).where({estado: 'enDiario'}).lean()
   listaVentas.forEach(async elem => {
     await Sale.findByIdAndUpdate(elem._id, {estado: estadoVenta})
   })
-  await Shop.findByIdAndUpdate(idLocal, {estado, efectivo})
+  await Shop.findByIdAndUpdate(idLocal, {efectivo, tarjeta, estado})
   res.redirect('/select')
 })
 
