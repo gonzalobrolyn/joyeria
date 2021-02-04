@@ -137,4 +137,51 @@ router.get('/sales/history/:idLocal', isAuthenticated, async (req, res) => {
   res.render('sales/history', {ventas, admin, total, enEfectivo, conTarjeta, local})
 })
 
+router.get('/sales/history2/:idLocal', isAuthenticated, async (req, res) => {
+  const idLocal = req.params.idLocal
+  const sesion = req.user
+
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+  const local = await Shop.findById(idLocal).lean()
+  res.render('sales/history2', {admin, local})
+})
+
+router.post('/sales/history2', isAuthenticated, async (req, res) => {
+  const sesion = req.user
+  const idLocal = req.body.idLocal
+  var total = 0
+  var enEfectivo = 0
+  var conTarjeta = 0
+
+  const fechaInicial = req.body.fechaBusqueda // ejemplo: '2019/03/26'
+  const fechaFinal = fechaInicial.substring(0,8).concat(Number(fechaInicial.substring(8)) + 1)
+
+  const historial = await Sale.find({$and: [{fecha: {$gte: new Date(fechaInicial), $lt: new Date(fechaFinal)}}]}).where({idLocal: idLocal}).populate('idProducto').lean()
+
+  historial.forEach(elem => {
+    elem.precio = elem.precio.toFixed(2)
+    total = total + elem.precioVenta
+    if (elem.formaPago == "En Efectivo"){
+      enEfectivo = enEfectivo + elem.precioVenta
+    } else if (elem.formaPago == "Con Tarjeta"){
+      conTarjeta = conTarjeta + elem.precioVenta
+    }
+    elem.precioVenta = elem.precioVenta.toFixed(2)
+    elem.fecha = elem.fecha.toLocaleTimeString()
+  })
+
+  if (sesion.cargo == 'Administrador'){
+    var admin = 'SI'
+  }
+
+  total = total.toFixed(2)
+  enEfectivo = enEfectivo.toFixed(2)
+  conTarjeta = conTarjeta.toFixed(2)
+
+  const local = await Shop.findById(idLocal).lean()
+  res.render('sales/history2', {admin, local, historial, total, enEfectivo, conTarjeta, fechaInicial})
+})
+
 module.exports = router
