@@ -50,6 +50,7 @@ app.use(require('./routes/users'))
 app.use(require('./routes/shops'))
 app.use(require('./routes/sales'))
 app.use(require('./routes/values'))
+app.use(require('./routes/pays'))
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))

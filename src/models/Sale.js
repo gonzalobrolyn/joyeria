@@ -14,4 +14,3 @@ const SaleSquema = new Schema ({
 })
 
 module.exports = mongoose.model('Sale', SaleSquema)
-

@@ -7,6 +7,7 @@ const List = require('../models/List')
 const Value = require('../models/Value')
 const Product = require('../models/Product')
 const Stock = require('../models/Stock')
+const Pay = require('../models/Pay')
 
 const {isAuthenticated} = require('../helpers/auth')
 
@@ -126,6 +127,13 @@ router.get('/sales/history/:idLocal', isAuthenticated, async (req, res) => {
     elem.precioVenta = elem.precioVenta.toFixed(2)
     elem.fecha = elem.fecha.toLocaleTimeString()
   })
+  const pagos = await Pay.find().where({idLocal: idLocal}).where({estado: 'enDiario'}).lean()
+  pagos.forEach(elem2 => {
+    enEfectivo = enEfectivo + elem2.monto
+    total = total + elem2.monto
+    elem2.monto = elem2.monto.toFixed(2)
+    elem2.fecha = elem2.fecha.toLocaleTimeString()
+  })
   const sesion = req.user
   if (sesion.cargo == 'Administrador'){
     var admin = 'SI'
@@ -134,7 +142,7 @@ router.get('/sales/history/:idLocal', isAuthenticated, async (req, res) => {
   enEfectivo = enEfectivo.toFixed(2)
   conTarjeta = conTarjeta.toFixed(2)
   const local = await Shop.findById(idLocal).lean()
-  res.render('sales/history', {ventas, admin, total, enEfectivo, conTarjeta, local})
+  res.render('sales/history', {ventas, pagos, admin, total, enEfectivo, conTarjeta, local})
 })
 
 router.get('/sales/history2/:idLocal', isAuthenticated, async (req, res) => {

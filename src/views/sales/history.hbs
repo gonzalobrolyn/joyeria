@@ -1,5 +1,4 @@
 <div class="row">
-  {{#if ventas}}
     <div class="card w-100">
       <div class="card-body">
         <h1 class="card-title display-4 d-flex justify-content-between align-items-center">Lista de Ventas de {{local.nombre}}
@@ -16,6 +15,7 @@
               <th scope="col">Precio sugerido</th>
               <th scope="col">Precio de venta</th>
               <th scope="col">Forma de pago</th>
+              <th scope="col">Vendedor</th>
             </tr>
           </thead>
           <tbody>
@@ -32,6 +32,17 @@
                 <td>S/ {{precio}}</td>
                 <td>S/ {{precioVenta}}</td>
                 <td>{{formaPago}}</td>
+                <td>{{vendedor}}</td>
+              </tr>
+            {{/each}}
+            {{#each pagos}}
+              <tr>
+                <td>{{fecha}}</td>
+                <td>Ingreso</td>
+                <td colspan="3">Concepto: {{concepto}}</td>
+                <td>S/ {{monto}}</td>
+                <td>En Efectivo</td>
+                <td>{{vendedor}}</td>
               </tr>
             {{/each}}
               <tr>
@@ -53,12 +64,4 @@
         </table>
       </div>
     </div>
-  {{else}}
-    <div class="card mx-auto">
-      <div class="card-body">
-        <p class="lead">No hay productos vendidos</p>
-        <a href="/select" class="btn btn-success btn-block">Vender Producto</a>
-      </div>
-    </div>
-  {{/if}}
 </div>
