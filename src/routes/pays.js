@@ -20,7 +20,7 @@ router.post('/pays/new-pay/:idLocal', isAuthenticated, async (req, res) => {
   const estado = "enDiario"
   const fecha = Date.now()
   const vendedor = req.user.nombre
-  const {concepto, monto} = req.body
+  const {concepto, monto, formaPago} = req.body
   const errors = []
   if(!concepto) {
     errors.push({text: 'Escribe el concepto del ingreso'})
@@ -35,11 +35,17 @@ router.post('/pays/new-pay/:idLocal', isAuthenticated, async (req, res) => {
       monto
     })
   } else {
-    const newPay = new Pay({idLocal, concepto, monto, estado, fecha, vendedor})
+    var suma = 0
+    const newPay = new Pay({idLocal, concepto, monto, estado, formaPago, fecha, vendedor})
     await newPay.save()
     const local = await Shop.findById(idLocal).lean()
-    const efec = local.efectivo + monto
-    await Shop.findByIdAndUpdate(idLocal, {efectivo: efec})
+    if (formaPago=="En Efectivo"){
+      suma = local.efectivo + parseFloat(monto)
+      await Shop.findByIdAndUpdate(idLocal, {efectivo: suma})
+    } else if (formaPago=="Con Tarjeta"){
+      suma = local.tarjeta + parseFloat(monto)
+      await Shop.findByIdAndUpdate(idLocal, {tarjeta: suma})
+    }
     req.flash('success_msg', 'Ingreso de efectivo registrado correctamente')
     res.redirect('/sales/'+idLocal)
   }

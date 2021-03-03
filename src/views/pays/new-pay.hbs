@@ -11,6 +11,19 @@
         <div class="form-group">
           <input type="number" name="monto" class="form-control" placeholder="Monto" step="0.01" value="{{monto}}">
         </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="formaPago" id="formaDePago1" checked value="En Efectivo">
+          <label class="form-check-label" for="formaDePago1">
+            Pago con efectivo
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="formaPago" id="formaDePago2" value="Con Tarjeta">
+          <label class="form-check-label" for="formaDePago2">
+            Pago con tarjeta
+          </label>
+        </div>
+        <p></p>
         <div class="form-group">
           <button class="btn btn-primary btn-block" type="submit">
             Guardar Ingreso

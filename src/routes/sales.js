@@ -129,8 +129,12 @@ router.get('/sales/history/:idLocal', isAuthenticated, async (req, res) => {
   })
   const pagos = await Pay.find().where({idLocal: idLocal}).where({estado: 'enDiario'}).lean()
   pagos.forEach(elem2 => {
-    enEfectivo = enEfectivo + elem2.monto
     total = total + elem2.monto
+    if (elem2.formaPago == "En Efectivo"){
+      enEfectivo = enEfectivo + elem2.monto
+    } else if (elem2.formaPago == "Con Tarjeta"){
+      conTarjeta = conTarjeta + elem2.monto
+    }
     elem2.monto = elem2.monto.toFixed(2)
     elem2.fecha = elem2.fecha.toLocaleTimeString()
   })

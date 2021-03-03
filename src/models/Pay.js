@@ -6,6 +6,7 @@ const PaySquema = new Schema ({
   concepto: {type: String},
   monto: {type: Number},
   estado: {type: String},
+  formaPago: {type: String},
   fecha: {type: Date, required: true},
   vendedor: {type: String, required: true}
 })
