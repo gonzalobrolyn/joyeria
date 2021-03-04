@@ -184,6 +184,18 @@ router.post('/sales/history2', isAuthenticated, async (req, res) => {
     elem.fecha = elem.fecha.toLocaleTimeString()
   })
 
+  const pagos = await Pay.find({$and: [{fecha: {$gte: new Date(fechaInicial), $lt: new Date(fechaFinal)}}]}).where({idLocal: idLocal}).lean()
+  pagos.forEach(elem2 => {
+    total = total + elem2.monto
+    if (elem2.formaPago == "En Efectivo"){
+      enEfectivo = enEfectivo + elem2.monto
+    } else if (elem2.formaPago == "Con Tarjeta"){
+      conTarjeta = conTarjeta + elem2.monto
+    }
+    elem2.monto = elem2.monto.toFixed(2)
+    elem2.fecha = elem2.fecha.toLocaleTimeString()
+  })
+
   if (sesion.cargo == 'Administrador'){
     var admin = 'SI'
   }
@@ -193,7 +205,7 @@ router.post('/sales/history2', isAuthenticated, async (req, res) => {
   conTarjeta = conTarjeta.toFixed(2)
 
   const local = await Shop.findById(idLocal).lean()
-  res.render('sales/history2', {admin, local, historial, total, enEfectivo, conTarjeta, fechaInicial})
+  res.render('sales/history2', {admin, pagos, local, historial, total, enEfectivo, conTarjeta, fechaInicial})
 })
 
 module.exports = router
